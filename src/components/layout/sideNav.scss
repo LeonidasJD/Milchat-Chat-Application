@@ -1,0 +1,41 @@
+nav {
+  width: 200px;
+  padding: 20px;
+  background-color: #2e1b3e;
+  height: calc(100vh - 40px);
+  border-radius: 0px 10px 10px 0px;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    margin-top: auto;
+    width: 100%;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    li {
+      display: flex;
+      a {
+        color: #2e1b3e;
+        text-decoration: none;
+        cursor: pointer;
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
+        width: 100%;
+        &:hover {
+          background-color: #b947ff;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.active-link {
+  background-color: #b947ff;
+  color: white;
+}
