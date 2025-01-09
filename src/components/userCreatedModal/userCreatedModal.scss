@@ -1,0 +1,14 @@
+.user-created-modal{
+    width: 550px;
+    border: 1px solid #b947ff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+
+    h2{
+        color: white;
+        font-size: 35px;
+    }
+}

@@ -1,0 +1,17 @@
+.about-data-wrapper {
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px;
+  background: lightgray;
+  padding: 50px;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  img {
+    border-radius: 50%;
+  }
+  .ant-image-mask {
+    border-radius: 50%;
+  }
+}

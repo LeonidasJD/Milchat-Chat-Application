@@ -1,0 +1,81 @@
+h1{
+    font-family: 'Roboto', sans-serif;
+}
+
+.header{
+    background-color: #2e1b3e;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e4e4e4;
+    .logo-wrapper{
+        display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        img{
+            width: 20%;
+            border-radius: 10px;
+        }
+    }
+}
+.header-links-wrapper{
+    display: flex;
+    gap: 30px;
+ul{
+    display: flex;
+    gap: 30px;
+    list-style-type:none ;
+    li{
+        cursor: pointer;
+    }
+}    
+}
+.main-page-wrapper{
+    background-color:#2e1b3e;
+   height: 90vh;
+   display: flex;
+   align-items: center;
+   padding: 20px;
+}
+.side-image-wrapper{
+    width: 50%;
+    img{
+        width: 70%;
+        border-radius: 10px;
+    }
+}
+.main-login-content{
+    width: 50%;
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+
+    }
+}
+.signUpWrapper,.loginWrapper{
+    width: 550px;
+    border: 1px solid #b947ff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    h1{
+        color:#b947ff
+    }
+
+}
+.alreadyHaveAccount{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.login-label{
+    color: white;
+    text-align: start;
+    width: 100%;
+
+}
