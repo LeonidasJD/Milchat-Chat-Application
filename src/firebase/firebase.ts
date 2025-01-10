@@ -2,8 +2,10 @@ import { initializeApp } from "firebase/app";
 import { Auth, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+const firebaseApiKey = process.env.FIREBASE_API_KEY;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCq_TRgXfZ0k6SSZDYpsSsjWYugFExvfOI",
+  apiKey: firebaseApiKey,
   authDomain: "milchat-82eed.firebaseapp.com",
   projectId: "milchat-82eed",
   storageBucket: "milchat-82eed.firebasestorage.app",
