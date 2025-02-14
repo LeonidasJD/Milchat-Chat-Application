@@ -10,7 +10,6 @@ import "./about-us.scss";
 const AboutUs = () => {
   const { isLoading } = useAboutUs();
   const aboutUsText = useSelector((state: RootState) => state.aboutUsText.text);
-  console.log("aboutUsText redux", aboutUsText);
 
   return (
     <>
