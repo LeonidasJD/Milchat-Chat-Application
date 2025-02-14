@@ -1,0 +1,24 @@
+.chat-room-container {
+  padding: 0px 20px 0px 20px;
+}
+
+.messages-wrapper {
+  border: 1px solid #2e1b3e;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f1f0f1;
+  overflow-y: scroll;
+}
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 70px;
+  border-top: 1px solid #8f8f8f;
+}
+.sendMessageInput {
+  margin-top: 15px;
+  border: none;
+  width: 96%;
+  padding: 10px;
+}
