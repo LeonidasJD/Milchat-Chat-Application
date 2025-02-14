@@ -8,6 +8,10 @@ import {
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
+import PageHeader from "../../common/page-header/page-header";
+import "./chatRoom.scss";
+import { Button, Input } from "antd";
+import { SendOutlined } from "@ant-design/icons";
 
 const ChatRoom = () => {
   interface Message {
@@ -16,7 +20,6 @@ const ChatRoom = () => {
     senderId: string;
     createdAt: any;
   }
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -53,52 +56,59 @@ const ChatRoom = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: "10px",
-          height: "300px",
-          overflowY: "scroll",
-        }}
-      >
-        {messages.map((msg) => (
+    <div className="chat-room-container">
+      <PageHeader
+        title="Chat Room"
+        fontColor="white"
+        backgroundColor="#2e1b3e"
+      />
+      <div className="messages-wrapper">
+        {messages.map((message) => (
           <div
-            key={msg.id}
+            key={message.id}
             style={{
               margin: "10px 0",
               textAlign:
-                msg.senderId === auth?.currentUser?.uid ? "right" : "left",
+                message.senderId === auth?.currentUser?.uid ? "right" : "left",
             }}
           >
             <span
               style={{
                 backgroundColor:
-                  msg.senderId === auth?.currentUser?.uid
+                  message.senderId === auth?.currentUser?.uid
                     ? "#dcf8c6"
-                    : "#f1f1f1",
+                    : "#2e1b3e",
                 padding: "8px",
                 borderRadius: "10px",
+                color:
+                  message.senderId === auth?.currentUser?.uid
+                    ? "black"
+                    : "white",
               }}
             >
-              {msg.text}
+              {message.text}
             </span>
           </div>
         ))}
+        <div className="input-wrapper">
+          <Input
+            className="sendMessageInput"
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+          />
+
+          <Button
+            type="primary"
+            shape="round"
+            icon={<SendOutlined />}
+            size={"large"}
+            style={{ backgroundColor: "#2e1b3e", marginTop: "15px" }}
+            onClick={sendMessage}
+          />
+        </div>
       </div>
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Type a message..."
-        style={{ width: "80%", padding: "10px", marginTop: "10px" }}
-      />
-      <button
-        onClick={sendMessage}
-        style={{ width: "18%", padding: "10px", marginLeft: "5px" }}
-      >
-        Send
-      </button>
     </div>
   );
 };
