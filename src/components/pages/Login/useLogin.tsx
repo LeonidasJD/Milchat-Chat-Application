@@ -14,7 +14,8 @@ import {
   getAuth,
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
-import { auth } from "../../../firebase/firebase.ts";
+import { auth, db } from "../../../firebase/firebase.ts";
+import { doc, setDoc } from "firebase/firestore";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -55,9 +56,15 @@ const useLogin = () => {
         data.email,
         data.password
       );
-      setUserCreated(true);
 
-      console.log("SIGN UP RESULTS", signUpResults);
+      // kada  korisnik napravi nalog upisujemo u bazu u kolekciju users upisujemo podatke o id korisnika i o emailu korisnika
+      const signUpUserId = signUpResults.user.uid;
+
+      await setDoc(doc(db, "users", signUpUserId), {
+        id: signUpUserId,
+        email: data.email,
+      });
+      setUserCreated(true);
     } catch (error) {
       console.log(error);
     }
