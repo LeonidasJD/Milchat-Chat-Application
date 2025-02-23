@@ -34,7 +34,7 @@ const UserList = () => {
   console.log(allUsersList);
 
   const filteredUsers = allUsersList.filter(
-    (user) => user.email !== auth.currentUser?.email
+    (user) => user.id !== auth.currentUser?.uid
   );
 
   return (
