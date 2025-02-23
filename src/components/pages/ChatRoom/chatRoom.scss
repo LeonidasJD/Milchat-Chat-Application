@@ -1,13 +1,21 @@
 .chat-room-container {
   padding: 0px 20px 0px 20px;
 }
-
+.mainWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.users-wrapper {
+  width: 30%;
+}
 .messages-wrapper {
   border: 1px solid #2e1b3e;
   border-radius: 10px;
   padding: 10px;
   background-color: #f1f0f1;
   overflow-y: scroll;
+  width: 100%;
 }
 .input-wrapper {
   display: flex;

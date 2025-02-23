@@ -1,0 +1,25 @@
+.users-wrapper {
+  border: 1px solid #b947ff;
+  border-radius: 20px;
+  padding: 10px;
+  background-color: #f1f0f1;
+  h1 {
+    font-size: 20px;
+    color: #2e1b3e;
+  }
+}
+
+.all-users-list {
+  .users-information {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    p {
+      margin: 0px;
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
+      color: #2e1b3e;
+      cursor: pointer;
+    }
+  }
+}
