@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { auth } from "../../../firebase/firebase.ts";
+import { auth, db } from "../../../firebase/firebase.ts";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../../redux/slice/userSlice.ts";
 import { MyUser } from "../../../redux/types/myUserType.ts";
@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ProfileName, ProfileEmail } from "./types/profileTypes.tsx";
 import { toast } from "react-hot-toast";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 const useProfile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -106,6 +107,13 @@ const useProfile = () => {
             photoURL: auth.currentUser?.photoURL || "",
             uid: auth.currentUser?.uid || "",
           };
+
+          if (auth.currentUser?.uid) {
+            updateDoc(doc(db, "users", auth.currentUser.uid), {
+              name: newDisplayName,
+            });
+          }
+
           dispatch(setCurrentUser(updatedUser));
           setModalOpen(false);
           toast.success("Profile name updated successfully!");
