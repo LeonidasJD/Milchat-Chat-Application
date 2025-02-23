@@ -12,6 +12,7 @@ import PageHeader from "../../common/page-header/page-header";
 import "./chatRoom.scss";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
+import UserList from "../../common/users/users";
 
 const ChatRoom = () => {
   interface Message {
@@ -62,51 +63,58 @@ const ChatRoom = () => {
         fontColor="white"
         backgroundColor="#2e1b3e"
       />
-      <div className="messages-wrapper">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            style={{
-              margin: "10px 0",
-              textAlign:
-                message.senderId === auth?.currentUser?.uid ? "right" : "left",
-            }}
-          >
-            <span
+      <div className="mainWrapper">
+        <div className="users-wrapper">
+          <UserList></UserList>
+        </div>
+        <div className="messages-wrapper">
+          {messages.map((message) => (
+            <div
+              key={message.id}
               style={{
-                backgroundColor:
+                margin: "10px 0",
+                textAlign:
                   message.senderId === auth?.currentUser?.uid
-                    ? "#dcf8c6"
-                    : "#2e1b3e",
-                padding: "8px",
-                borderRadius: "10px",
-                color:
-                  message.senderId === auth?.currentUser?.uid
-                    ? "black"
-                    : "white",
+                    ? "right"
+                    : "left",
               }}
             >
-              {message.text}
-            </span>
-          </div>
-        ))}
-        <div className="input-wrapper">
-          <Input
-            className="sendMessageInput"
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message..."
-          />
+              <span
+                style={{
+                  backgroundColor:
+                    message.senderId === auth?.currentUser?.uid
+                      ? "#dcf8c6"
+                      : "#2e1b3e",
+                  padding: "8px",
+                  borderRadius: "10px",
+                  color:
+                    message.senderId === auth?.currentUser?.uid
+                      ? "black"
+                      : "white",
+                }}
+              >
+                {message.text}
+              </span>
+            </div>
+          ))}
+          <div className="input-wrapper">
+            <Input
+              className="sendMessageInput"
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type a message..."
+            />
 
-          <Button
-            type="primary"
-            shape="round"
-            icon={<SendOutlined />}
-            size={"large"}
-            style={{ backgroundColor: "#2e1b3e", marginTop: "15px" }}
-            onClick={sendMessage}
-          />
+            <Button
+              type="primary"
+              shape="round"
+              icon={<SendOutlined />}
+              size={"large"}
+              style={{ backgroundColor: "#2e1b3e", marginTop: "15px" }}
+              onClick={sendMessage}
+            />
+          </div>
         </div>
       </div>
     </div>
