@@ -7,11 +7,13 @@ import GlobalLoader from "../global-loader/global-loader";
 import { setSelectedUserData } from "../../../redux/slice/selectedUserSlice";
 import "./allUsers.scss";
 import { useDispatch } from "react-redux";
+import { Input } from "antd";
 
 const UserList = () => {
   const [allUsersList, setAllUsersList] = useState<UsersList>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<string>("");
+  const [finalFilteredUsers, setFinalFilteredUsers] = useState<UsersList>([]);
 
   const dispatch = useDispatch();
 
@@ -54,32 +56,53 @@ const UserList = () => {
     );
   };
 
+  // filtriranje korisnika tako da iskljuci trenutno prijavljenog korisnika
   const filteredUsers = allUsersList.filter(
     (user) => user.id !== auth.currentUser?.uid
   );
 
+  //funkcija koja na onChange pretrazuje filtrirane korisnike iz varijable iznad tako da ispisuje samo korisnike koje pretrazimo
+  const onSearch = (searchText: string) => {
+    const finallUsers = filteredUsers.filter((user) =>
+      user.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFinalFilteredUsers(finallUsers);
+  };
+
   return (
     <div className="all-users-container">
-      <h1>All Users</h1>
+      <div className="all-users-header">
+        <h1>All Friends</h1>
+        <Input.Search
+          placeholder="Search friend"
+          onChange={(e) => onSearch(e.target.value)}
+          style={{ width: 200 }}
+        />
+      </div>
+
       {isLoading ? (
         <GlobalLoader />
       ) : (
         <div className="all-users-list">
-          <ul className="users-information">
-            {filteredUsers.map((user) => (
-              <li key={user.id} onClick={() => onSelectUser(user.id)}>
-                <p>{user.name}</p>
-                <span
-                  style={{
-                    backgroundColor: user.isOnline ? "green" : "red",
-                  }}
-                  className={`user-status ${
-                    user.isOnline ? "online" : "offline"
-                  }`}
-                ></span>
-              </li>
-            ))}
-          </ul>
+          {finalFilteredUsers.length > 0 ? (
+            <ul className="users-information">
+              {finalFilteredUsers.map((user) => (
+                <li key={user.id} onClick={() => onSelectUser(user.id)}>
+                  <p>{user.name}</p>
+                  <span
+                    style={{
+                      backgroundColor: user.isOnline ? "green" : "red",
+                    }}
+                    className={`user-status ${
+                      user.isOnline ? "online" : "offline"
+                    }`}
+                  ></span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-user-found">No friends found</p>
+          )}
         </div>
       )}
     </div>
