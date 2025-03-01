@@ -3,9 +3,14 @@
   border-radius: 20px;
   padding: 10px;
   background-color: #f1f0f1;
-  h1 {
-    font-size: 20px;
-    color: #2e1b3e;
+  .all-users-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      font-size: 20px;
+      color: #2e1b3e;
+    }
   }
 }
 
@@ -32,5 +37,9 @@
       height: 10px;
       border-radius: 50%;
     }
+  }
+
+  .no-user-found {
+    color: #2e1b3e;
   }
 }
