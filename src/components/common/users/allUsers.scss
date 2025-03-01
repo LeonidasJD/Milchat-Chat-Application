@@ -14,12 +14,23 @@
     list-style-type: none;
     margin: 0px;
     padding: 0px;
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     p {
       margin: 0px;
       padding: 5px;
       border-bottom: 1px solid #ddd;
       color: #2e1b3e;
       cursor: pointer;
+    }
+    .user-status {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
     }
   }
 }
