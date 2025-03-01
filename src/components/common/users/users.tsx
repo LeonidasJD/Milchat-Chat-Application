@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { auth, db } from "../../../firebase/firebase";
 import { UsersList } from "./types/allUsersType";
@@ -17,23 +17,26 @@ const UserList = () => {
 
   useEffect(() => {
     // funkcija za preuzimanje svih registrovanih korisnika
-    const fetchUsers = async () => {
-      try {
-        const usersResult = await getDocs(collection(db, "users"));
-        const usersList = usersResult.docs.map((doc) => ({
+    //koristimo onSnapshot listener za realtime update podataka
+    const unsubscribe = onSnapshot(
+      collection(db, "users"),
+      (snapshot) => {
+        const usersList = snapshot.docs.map((doc) => ({
           id: doc.id,
           email: doc.data().email,
           name: doc.data().name,
+          isOnline: doc.data().isOnline,
         }));
         setAllUsersList(usersList);
         setIsLoading(false);
-      } catch (error) {
+      },
+      (error) => {
         toast.error("Error fetching users");
         setIsLoading(false);
       }
-    };
+    );
 
-    fetchUsers();
+    return () => unsubscribe(); // Cleanup listener-a
   }, []);
 
   const onSelectUser = (selectedUserId: string) => {
@@ -66,6 +69,14 @@ const UserList = () => {
             {filteredUsers.map((user) => (
               <li key={user.id} onClick={() => onSelectUser(user.id)}>
                 <p>{user.name}</p>
+                <span
+                  style={{
+                    backgroundColor: user.isOnline ? "green" : "red",
+                  }}
+                  className={`user-status ${
+                    user.isOnline ? "online" : "offline"
+                  }`}
+                ></span>
               </li>
             ))}
           </ul>
