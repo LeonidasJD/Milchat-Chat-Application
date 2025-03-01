@@ -7,6 +7,7 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
+  doc,
 } from "firebase/firestore";
 import PageHeader from "../../common/page-header/page-header";
 import "./chatRoom.scss";
@@ -26,12 +27,36 @@ const ChatRoom = () => {
   }
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [userIsOnline, setUserIsOnline] = useState<boolean>(false);
   const selectedUserId = useSelector(
     (state: RootState) => state.setSelectedUserData.userId
   );
   const selectedUserName = useSelector(
     (state: RootState) => state.setSelectedUserData.userName
   );
+
+  // PRACENJE STATUSA KORISNIKA DA LI JE ONLINE ILI OFFLINE
+
+  useEffect(() => {
+    if (!selectedUserId) return;
+
+    const useRef = doc(db, "users", selectedUserId);
+
+    const unsubscribe = onSnapshot(useRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        // user is online
+        const userData = docSnapshot.data();
+        if (userData.isOnline && userData.isOnline !== undefined) {
+          setUserIsOnline(true);
+        } else {
+          // user is offline
+          setUserIsOnline(false);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [selectedUserId]);
 
   // HOOK FOR FETCHING MESSAGES FROM DATABASE
   useEffect(() => {
@@ -91,6 +116,9 @@ const ChatRoom = () => {
         <div className="allChat">
           <div className="receiverDataBar">
             <h3>{selectedUserName}</h3>
+            <span
+              style={{ backgroundColor: userIsOnline ? "green" : "red" }}
+            ></span>
           </div>
           <div className="messages-wrapper">
             {messages.map((message) => (
