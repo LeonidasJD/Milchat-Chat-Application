@@ -13,6 +13,7 @@ const UserList = () => {
   const [allUsersList, setAllUsersList] = useState<UsersList>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<string>("");
+  const [searchText, setSearchText] = useState("");
   const [finalFilteredUsers, setFinalFilteredUsers] = useState<UsersList>([]);
 
   const dispatch = useDispatch();
@@ -63,11 +64,17 @@ const UserList = () => {
 
   //funkcija koja na onChange pretrazuje filtrirane korisnike iz varijable iznad tako da ispisuje samo korisnike koje pretrazimo
   const onSearch = (searchText: string) => {
+    setSearchText(searchText);
     const finallUsers = filteredUsers.filter((user) =>
       user.name.toLowerCase().includes(searchText.toLowerCase())
     );
     setFinalFilteredUsers(finallUsers);
   };
+
+  // prikazivanje korisnika u zavisnosti od toga da li je nesto upisano u search input
+  const usersToDisplay =
+    searchText.length > 0 ? finalFilteredUsers : filteredUsers;
+  const hasUsers = usersToDisplay.length > 0;
 
   return (
     <div className="all-users-container">
@@ -84,9 +91,9 @@ const UserList = () => {
         <GlobalLoader />
       ) : (
         <div className="all-users-list">
-          {finalFilteredUsers.length > 0 ? (
+          {hasUsers ? (
             <ul className="users-information">
-              {finalFilteredUsers.map((user) => (
+              {usersToDisplay.map((user) => (
                 <li key={user.id} onClick={() => onSelectUser(user.id)}>
                   <p>{user.name}</p>
                   <span
@@ -101,7 +108,7 @@ const UserList = () => {
               ))}
             </ul>
           ) : (
-            <p className="no-user-found">No friends found</p>
+            <p className="no-user-found">No users found</p>
           )}
         </div>
       )}
