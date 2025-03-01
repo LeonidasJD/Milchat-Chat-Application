@@ -15,7 +15,7 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
 import { auth, db } from "../../../firebase/firebase.ts";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -72,9 +72,21 @@ const useLogin = () => {
 
   const onSubmitLogin = async (data: LoginFormValues) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const loginResults = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const loginUser = loginResults.user;
+
+      if (loginUser && auth.currentUser?.uid) {
+        updateDoc(doc(db, "users", auth.currentUser?.uid), {
+          isOnline: true,
+        });
+      }
 
       setIsLoggedIn(true);
+
       console.log("current user", auth.currentUser);
       navigate("/");
     } catch (error: unknown) {
@@ -104,8 +116,14 @@ const useLogin = () => {
     const auth = getAuth();
 
     try {
+      if (auth.currentUser?.uid) {
+        updateDoc(doc(db, "users", auth.currentUser?.uid), {
+          isOnline: false,
+        });
+      }
       await signOut(auth);
       console.log("current user", auth.currentUser); //IF USER IS NULL IT IS CORRECT LOGOUT
+
       navigate("/login");
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
