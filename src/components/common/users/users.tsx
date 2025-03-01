@@ -108,7 +108,7 @@ const UserList = () => {
               ))}
             </ul>
           ) : (
-            <p className="no-user-found">No users found</p>
+            <p className="no-user-found">No friend found</p>
           )}
         </div>
       )}
