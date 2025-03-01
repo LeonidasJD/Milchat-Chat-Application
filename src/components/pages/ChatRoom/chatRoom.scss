@@ -9,14 +9,43 @@
 .users-wrapper {
   width: 30%;
 }
-.messages-wrapper {
-  border: 1px solid #2e1b3e;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: #f1f0f1;
-  overflow-y: scroll;
+.allChat {
   width: 100%;
+
+  .receiverDataBar {
+    display: flex;
+    align-items: center;
+
+    font-size: 14px;
+    color: #2e1b3e;
+    background: #b947ff;
+    padding: 20px 0px 20px 10px;
+    border-top: 1px solid #2e1b3e;
+    border-right: 1px solid #2e1b3e;
+    border-bottom: 0px solid #2e1b3e;
+    border-left: 1px solid #2e1b3e;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    h3 {
+      margin: 0px;
+      color: white;
+      font-size: 20px;
+    }
+  }
+
+  .messages-wrapper {
+    border-top: 0px solid #2e1b3e;
+    border-right: 1px solid #2e1b3e;
+    border-bottom: 1px solid #2e1b3e;
+    border-left: 1px solid #2e1b3e;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 10px;
+    background-color: #f1f0f1;
+    overflow-y: scroll;
+  }
 }
+
 .input-wrapper {
   display: flex;
   align-items: center;
