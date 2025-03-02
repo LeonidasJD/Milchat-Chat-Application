@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@ant-design/charts": "^2.2.6",
+    "@ant-design/icons": "^5.6.1",
     "@reduxjs/toolkit": "^2.5.0",
+    "@sendbird/chat": "^4.16.5",
+    "@sendbird/uikit-react": "^3.15.15",
     "@svgr/webpack": "^8.1.0",
     "antd": "^5.22.1",
     "firebase": "^11.0.2",
@@ -23,6 +26,7 @@
     "react-router-dom": "^6.28.0",
     "redux": "^5.0.1",
     "sass": "^1.81.0",
+    "sendbird": "^3.1.33",
     "typeface-roboto": "^1.1.13",
     "vite-plugin-svgr": "^4.3.0"
   },

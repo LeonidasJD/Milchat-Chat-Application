@@ -1,8 +1,7 @@
-import { Input, QRCode, Space } from "antd";
-import { useState } from "react";
+import { QRCode, Space } from "antd";
 
 const QrCode = () => {
-  const [text, setText] = useState("https://ant.design/");
+  const text = "https://ant.design/";
 
   return (
     <Space direction="vertical" align="center">

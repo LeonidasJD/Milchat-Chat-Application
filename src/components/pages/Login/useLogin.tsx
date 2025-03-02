@@ -14,7 +14,8 @@ import {
   getAuth,
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
-import { auth } from "../../../firebase/firebase.ts";
+import { auth, db } from "../../../firebase/firebase.ts";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -55,9 +56,15 @@ const useLogin = () => {
         data.email,
         data.password
       );
-      setUserCreated(true);
 
-      console.log("SIGN UP RESULTS", signUpResults);
+      // kada  korisnik napravi nalog upisujemo u bazu u kolekciju users upisujemo podatke o id korisnika i o emailu korisnika
+      const signUpUserId = signUpResults.user.uid;
+
+      await setDoc(doc(db, "users", signUpUserId), {
+        id: signUpUserId,
+        email: data.email,
+      });
+      setUserCreated(true);
     } catch (error) {
       console.log(error);
     }
@@ -65,9 +72,21 @@ const useLogin = () => {
 
   const onSubmitLogin = async (data: LoginFormValues) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const loginResults = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const loginUser = loginResults.user;
+
+      if (loginUser && auth.currentUser?.uid) {
+        updateDoc(doc(db, "users", auth.currentUser?.uid), {
+          isOnline: true,
+        });
+      }
 
       setIsLoggedIn(true);
+
       console.log("current user", auth.currentUser);
       navigate("/");
     } catch (error: unknown) {
@@ -97,8 +116,14 @@ const useLogin = () => {
     const auth = getAuth();
 
     try {
+      if (auth.currentUser?.uid) {
+        updateDoc(doc(db, "users", auth.currentUser?.uid), {
+          isOnline: false,
+        });
+      }
       await signOut(auth);
       console.log("current user", auth.currentUser); //IF USER IS NULL IT IS CORRECT LOGOUT
+
       navigate("/login");
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {

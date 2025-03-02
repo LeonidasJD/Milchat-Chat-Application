@@ -1,0 +1,45 @@
+.users-wrapper {
+  border: 1px solid #b947ff;
+  border-radius: 20px;
+  padding: 10px;
+  background-color: #f1f0f1;
+  .all-users-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      font-size: 20px;
+      color: #2e1b3e;
+    }
+  }
+}
+
+.all-users-list {
+  .users-information {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    p {
+      margin: 0px;
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
+      color: #2e1b3e;
+      cursor: pointer;
+    }
+    .user-status {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+  }
+
+  .no-user-found {
+    color: #2e1b3e;
+  }
+}
