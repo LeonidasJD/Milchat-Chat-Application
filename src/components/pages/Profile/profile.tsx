@@ -36,8 +36,9 @@ const Profile = () => {
   } = useProfile();
 
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-  const firstLetter = currentUser?.displayName
-    ? currentUser.displayName.charAt(0)
+
+  const firstLetter = currentUser?.userName
+    ? currentUser.userName.charAt(0)
     : "";
 
   return (
@@ -61,11 +62,11 @@ const Profile = () => {
               <div>
                 <div className="user-data">
                   <span>
-                    Chat Name:{" "}
+                    Name:{" "}
                     <p>
                       {" "}
-                      {currentUser?.displayName
-                        ? currentUser.displayName
+                      {currentUser?.userName
+                        ? currentUser.userName
                         : "Not set yet"}
                     </p>
                   </span>
@@ -100,7 +101,7 @@ const Profile = () => {
               <div>{<QrCode />}</div>
               <Button
                 onClick={() =>
-                  handleOpenChangeProfileModal(currentUser?.displayName ?? "")
+                  handleOpenChangeProfileModal(currentUser?.userName ?? "")
                 }
                 color="dark"
                 text="Change Profile Name"
