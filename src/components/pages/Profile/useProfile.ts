@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ProfileName, ProfileEmail } from "./types/profileTypes.tsx";
 import { toast } from "react-hot-toast";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 const useProfile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
