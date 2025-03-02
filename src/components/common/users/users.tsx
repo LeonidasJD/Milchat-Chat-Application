@@ -12,7 +12,6 @@ import { Input } from "antd";
 const UserList = () => {
   const [allUsersList, setAllUsersList] = useState<UsersList>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedUser, setSelectedUser] = useState<string>("");
   const [searchText, setSearchText] = useState("");
   const [finalFilteredUsers, setFinalFilteredUsers] = useState<UsersList>([]);
 
@@ -43,8 +42,6 @@ const UserList = () => {
   }, []);
 
   const onSelectUser = (selectedUserId: string) => {
-    setSelectedUser(selectedUserId);
-
     const selectedUserName = allUsersList.find(
       (user) => user.id === selectedUserId
     )?.name;
