@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from "../pages/AboutUs/aboutUs";
 import ChatRoom from "../pages/ChatRoom/chatRoom";
 import Profile from "../pages/Profile/profile";
-import Statistics from "../pages/Statistics/Statistics";
+import Statistics from "../pages/Statistics/statistics";
 
 const router = () => {
   return createBrowserRouter([
