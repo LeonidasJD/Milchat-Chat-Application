@@ -20,6 +20,7 @@ const UserList = () => {
   useEffect(() => {
     // funkcija za preuzimanje svih registrovanih korisnika
     //koristimo onSnapshot listener za realtime update podataka
+
     const unsubscribe = onSnapshot(
       collection(db, "users"),
       (snapshot) => {
@@ -32,7 +33,7 @@ const UserList = () => {
         setAllUsersList(usersList);
         setIsLoading(false);
       },
-      (error) => {
+      () => {
         toast.error("Error fetching users");
         setIsLoading(false);
       }
