@@ -1,4 +1,4 @@
-import { Select, Space, Input } from "antd";
+import { Select, Space, Input, DatePicker } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Logo from "../../../assets/login/milchatLogo.png";
 import LoginBanner from "../../../assets/login/banner.png";
@@ -66,6 +66,46 @@ const Login = () => {
             <div className="signUpWrapper">
               <h1>SIGN UP FOR FREE</h1>
               <form onSubmit={handleSubmitSignUp(onSubmitSignUp)}>
+                <label className="login-label">Name</label>
+                <Controller
+                  name="name"
+                  control={controlSignUp}
+                  rules={{
+                    required: "Name is required*",
+                    pattern: {
+                      value: /^.+$/,
+                      message: "Name must containet at least one character*",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      type="text"
+                      placeholder="Enter your name"
+                      {...field}
+                    />
+                  )}
+                />
+                {errorsSignUp?.name && (
+                  <span className="error-message">
+                    {String(errorsSignUp.name.message)}
+                  </span>
+                )}
+                <label className="login-label">Date of birth</label>
+                <Controller
+                  name="dateOfBirth"
+                  control={controlSignUp}
+                  rules={{
+                    required: "Date of birth is required*",
+                  }}
+                  render={({ field }) => (
+                    <DatePicker style={{ width: "100%" }} {...field} />
+                  )}
+                />
+                {errorsSignUp?.dateOfBirth && (
+                  <span className="error-message">
+                    {String(errorsSignUp.dateOfBirth.message)}
+                  </span>
+                )}
                 <label className="login-label">Email</label>
                 <Controller
                   name="email"
