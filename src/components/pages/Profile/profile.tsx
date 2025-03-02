@@ -61,7 +61,7 @@ const Profile = () => {
               <div>
                 <div className="user-data">
                   <span>
-                    Name:{" "}
+                    Chat Name:{" "}
                     <p>
                       {" "}
                       {currentUser?.displayName

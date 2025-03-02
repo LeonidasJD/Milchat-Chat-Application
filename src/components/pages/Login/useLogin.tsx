@@ -16,6 +16,7 @@ import {
 import { FirebaseError } from "@firebase/util";
 import { auth, db } from "../../../firebase/firebase.ts";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
+import dayjs from "dayjs";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -50,6 +51,8 @@ const useLogin = () => {
   }, []);
 
   const onSubmitSignUp = async (data: SignUpFormValues) => {
+    const formattedDate = dayjs(data.dateOfBirth).format("YYYY-MM-DD");
+
     try {
       const signUpResults = await createUserWithEmailAndPassword(
         auth,
@@ -61,6 +64,8 @@ const useLogin = () => {
       const signUpUserId = signUpResults.user.uid;
 
       await setDoc(doc(db, "users", signUpUserId), {
+        name: data.name,
+        dateOfBirth: formattedDate,
         id: signUpUserId,
         email: data.email,
       });
