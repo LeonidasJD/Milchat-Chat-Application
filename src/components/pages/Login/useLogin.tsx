@@ -15,8 +15,11 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
 import { auth, db } from "../../../firebase/firebase.ts";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import dayjs from "dayjs";
+import { MyUser } from "../../../redux/types/myUserType.ts";
+import { useDispatch } from "react-redux";
+import { resetUser, setCurrentUser } from "../../../redux/slice/userSlice.ts";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -25,6 +28,8 @@ const useLogin = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const {
     control: controlSignUp,
@@ -77,6 +82,7 @@ const useLogin = () => {
 
   const onSubmitLogin = async (data: LoginFormValues) => {
     try {
+      //firebase cloud funkcija za login korisnika
       const loginResults = await signInWithEmailAndPassword(
         auth,
         data.email,
@@ -84,18 +90,42 @@ const useLogin = () => {
       );
       const loginUser = loginResults.user;
 
+      //kada se korisnik uloguje upisujemo u bazu da je online
       if (loginUser && auth.currentUser?.uid) {
         updateDoc(doc(db, "users", auth.currentUser?.uid), {
           isOnline: true,
         });
       }
 
-      setIsLoggedIn(true);
+      //kada se korisnik uloguje fetchujemo podatke o korisniku u prosledjujemo u redux kako bi protected ruta znala da li je korisnik logovan ili ne
 
-      console.log("current user", auth.currentUser);
-      navigate("/");
+      if (loginUser && auth.currentUser?.uid) {
+        const docRef = doc(db, "users", auth.currentUser?.uid);
+        const userResult = await getDoc(docRef);
+
+        const mappedUser: MyUser = {
+          displayName: loginUser.displayName || "",
+          email: loginUser.email || "",
+          emailVerified: loginUser.emailVerified,
+          isAnonymous: loginUser.isAnonymous,
+          userName: userResult.data()?.name || "",
+          metadata: {
+            creationTime: loginUser.metadata.creationTime || "",
+            lastSignInTime: loginUser.metadata.lastSignInTime || "",
+          },
+          phoneNumber: loginUser.phoneNumber || "",
+          photoURL: loginUser.photoURL || "",
+          uid: loginUser.uid || "",
+        };
+
+        await dispatch(setCurrentUser(mappedUser));
+        navigate("/");
+      } else {
+        dispatch(setCurrentUser(null));
+      }
+
+      setIsLoggedIn(true);
     } catch (error: unknown) {
-      console.error("Error during login:", error);
       //ALL ERRORS ARE FROM FIREBASE DOCS
       if (error instanceof FirebaseError) {
         if (error.message === "Firebase: Error (auth/invalid-credential).") {
@@ -128,6 +158,7 @@ const useLogin = () => {
       }
       await signOut(auth);
       console.log("current user", auth.currentUser); //IF USER IS NULL IT IS CORRECT LOGOUT
+      dispatch(resetUser());
 
       navigate("/login");
     } catch (error: unknown) {
