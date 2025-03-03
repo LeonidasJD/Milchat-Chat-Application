@@ -3,6 +3,7 @@ export interface MyUser {
   email: string;
   emailVerified: boolean;
   isAnonymous: boolean;
+  userName: string;
   metadata: {
     creationTime: string;
     lastSignInTime: string;

@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ProfileName, ProfileEmail } from "./types/profileTypes.tsx";
 import { toast } from "react-hot-toast";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
 const useProfile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -31,26 +31,34 @@ const useProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        const mappedUser: MyUser = {
-          displayName: currentUser.displayName || "",
-          email: currentUser.email || "",
-          emailVerified: currentUser.emailVerified,
-          isAnonymous: currentUser.isAnonymous,
-          metadata: {
-            creationTime: currentUser.metadata.creationTime || "",
-            lastSignInTime: currentUser.metadata.lastSignInTime || "",
-          },
-          phoneNumber: currentUser.phoneNumber || "",
-          photoURL: currentUser.photoURL || "",
-          uid: currentUser.uid || "",
-        };
+    const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+      try {
+        if (currentUser && auth.currentUser?.uid) {
+          const docRef = doc(db, "users", auth.currentUser?.uid);
+          const userResult = await getDoc(docRef);
 
-        dispatch(setCurrentUser(mappedUser));
-        setIsLoading(false);
-      } else {
-        dispatch(setCurrentUser(null));
+          const mappedUser: MyUser = {
+            displayName: currentUser.displayName || "",
+            email: currentUser.email || "",
+            emailVerified: currentUser.emailVerified,
+            isAnonymous: currentUser.isAnonymous,
+            userName: userResult.data()?.name || "",
+            metadata: {
+              creationTime: currentUser.metadata.creationTime || "",
+              lastSignInTime: currentUser.metadata.lastSignInTime || "",
+            },
+            phoneNumber: currentUser.phoneNumber || "",
+            photoURL: currentUser.photoURL || "",
+            uid: currentUser.uid || "",
+          };
+
+          dispatch(setCurrentUser(mappedUser));
+          setIsLoading(false);
+        } else {
+          dispatch(setCurrentUser(null));
+        }
+      } catch (error) {
+        toast.error("Something went wrong, please try again!");
       }
     });
 
@@ -99,6 +107,7 @@ const useProfile = () => {
             email: auth.currentUser?.email || "",
             emailVerified: auth.currentUser?.emailVerified ?? false,
             isAnonymous: auth.currentUser?.isAnonymous ?? false,
+            userName: newDisplayName,
             metadata: {
               creationTime: auth.currentUser?.metadata.creationTime || "",
               lastSignInTime: auth.currentUser?.metadata.lastSignInTime || "",
@@ -168,20 +177,26 @@ const useProfile = () => {
     const user = auth.currentUser;
 
     if (user) {
-      deleteUser(user)
-        .then(() => {
-          toast.success("User deleted successfully!");
+      const docRef = doc(db, "users", user.uid);
 
-          dispatch(setCurrentUser(null));
-          setDeleteUserModalOpen(false);
+      //brisanje korisnika iz kolekcije users
+      deleteDoc(docRef).then(() => {
+        //firebase cloud function za brisanje korisnika
+        deleteUser(user)
+          .then(() => {
+            toast.success("User deleted successfully!");
 
-          setTimeout(() => {
-            navigate("/login", { replace: true });
-          }, 1000);
-        })
-        .catch((error) => {
-          toast.error("Something went wrong, please try again!", error);
-        });
+            dispatch(setCurrentUser(null));
+            setDeleteUserModalOpen(false);
+
+            setTimeout(() => {
+              navigate("/login", { replace: true });
+            }, 1000);
+          })
+          .catch((error) => {
+            toast.error("Something went wrong, please try again!", error);
+          });
+      });
     } else {
       toast.error("No user is currently signed in.");
     }
