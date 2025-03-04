@@ -1,3 +1,4 @@
+@import "../../styles/mixins.scss";
 nav {
   width: 200px;
   padding: 20px;
@@ -6,12 +7,23 @@ nav {
   border-radius: 0px 10px 10px 0px;
   display: flex;
   flex-direction: column;
+  @include respond(phone) {
+    width: 70vw;
+    position: absolute;
+    z-index: 1;
+  }
 
   button {
     margin-top: auto;
     width: 100%;
   }
-
+  .close-button {
+    @include respond(phone) {
+      background: transparent;
+      border: none;
+      text-align: start;
+    }
+  }
   ul {
     display: flex;
     flex-direction: column;

@@ -17,6 +17,7 @@ import { SendOutlined } from "@ant-design/icons";
 import UserList from "../../common/users/users";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
+import GlobalModal from "../../common/global-modal/globalModal";
 
 const ChatRoom = () => {
   interface Message {
@@ -175,6 +176,12 @@ const ChatRoom = () => {
         ) : (
           <NoSelectedUser></NoSelectedUser>
         )}
+
+        <GlobalModal handleCancel={() => {}} title="Users" isModalOpen={false}>
+          <div className="users-wrapper">
+            <UserList></UserList>
+          </div>
+        </GlobalModal>
       </div>
     </div>
   );

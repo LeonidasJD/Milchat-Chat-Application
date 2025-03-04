@@ -1,5 +1,12 @@
-.ant-input{
-    &::placeholder{
-        color:#b947ff
+.ant-input {
+  &::placeholder {
+    color: #b947ff;
+  }
+}
+.ant-picker-input {
+  input {
+    &::placeholder {
+      color: #b947ff !important;
     }
+  }
 }
