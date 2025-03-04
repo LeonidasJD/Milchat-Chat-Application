@@ -1,3 +1,15 @@
-main {
-  width: 100%;
+@import "../../styles/_mixins.scss";
+
+.main-layout {
+  display: flex;
+
+  @include respond(phone) {
+    flex-direction: column;
+  }
+  .main-content {
+    width: 100%;
+    display: "flex";
+    flex-direction: "column";
+    flex: 1;
+  }
 }

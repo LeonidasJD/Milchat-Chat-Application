@@ -5,9 +5,9 @@ import "./mainLayout.scss";
 
 const MainLayout = () => {
   return (
-    <div style={{ display: "flex" }}>
+    <div className="main-layout" style={{ display: "flex" }}>
       <SideNav />
-      <main style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+      <main className="main-content">
         <Outlet />
         <BottomBar />
       </main>
