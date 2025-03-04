@@ -2065,6 +2065,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@juggle/resize-observer@^3.3.1":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
+  integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
+
 "@ljharb/resumer@~0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@ljharb/resumer/-/resumer-0.0.1.tgz#8a940a9192dd31f6a1df17564bbd26dc6ad3e68d"
@@ -4062,6 +4067,11 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
+eventemitter3@^3.1.0:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
+  integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
+
 eventemitter3@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
@@ -4210,6 +4220,11 @@ follow-redirects@^1.14.9:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.9.tgz#a604fa10e443bf98ca94228d9eebcc2e8a2c8ee1"
   integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
 
+fontfaceobserver@^2.1.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/fontfaceobserver/-/fontfaceobserver-2.3.0.tgz#5fb392116e75d5024b7ec8e4f2ce92106d1488c8"
+  integrity sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==
+
 for-each@^0.3.3, for-each@~0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/for-each/-/for-each-0.3.3.tgz#69b447e88a0a5d32c3e7084f3f1710034b21376e"
@@ -4225,6 +4240,26 @@ form-data@^4.0.0:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
+
+framer-motion@^12.4.10:
+  version "12.4.10"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.4.10.tgz#5b2aa0a18f5563edc9603c2c1cbc9d6f19a110a2"
+  integrity sha512-3Msuyjcr1Pb5hjkn4EJcRe1HumaveP0Gbv4DBMKTPKcV/1GSMkQXj+Uqgneys+9DPcZM18Hac9qY9iUEF5LZtg==
+  dependencies:
+    motion-dom "^12.4.10"
+    motion-utils "^12.4.10"
+    tslib "^2.4.0"
+
+framer@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/framer/-/framer-2.4.1.tgz#4cee197e7a6a50f111ce552c4b93cf940976f90f"
+  integrity sha512-kInsb+tmtNEvOeRa8wT2oRAl8Xe1L8ev4ahinB875Xh0zPBLt5Di6fuvBUILnDUU6mqmM+6QPiNxg62Va66V4Q==
+  dependencies:
+    "@juggle/resize-observer" "^3.3.1"
+    eventemitter3 "^3.1.0"
+    fontfaceobserver "^2.1.0"
+    hoist-non-react-statics "^3.3.2"
+    hsluv "^0.0.3"
 
 fs-minipass@^2.0.0, fs-minipass@^2.1.0:
   version "2.1.0"
@@ -4517,6 +4552,13 @@ hasown@^2.0.0, hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+hoist-non-react-statics@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
+
 hosted-git-info@^2.1.4:
   version "2.8.9"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
@@ -4528,6 +4570,11 @@ hosted-git-info@^4.0.1:
   integrity sha512-kyCuEOWjJqZuDbRHzL8V93NzQhwIB71oFWSyzVo+KPZI+pnQPPxucdkrOZvkLRnrf5URsQM+IJ09Dw29cRALIA==
   dependencies:
     lru-cache "^6.0.0"
+
+hsluv@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/hsluv/-/hsluv-0.0.3.tgz#829107dafb4a9f8b52a1809ed02e091eade6754c"
+  integrity sha512-08iL2VyCRbkQKBySkSh6m8zMUa3sADAxGVWs3Z1aPcUkTJeK0ETG4Fc27tEmQBGUAXZjIsXOZqBvacuVNSC/fQ==
 
 http-cache-semantics@^4.1.0:
   version "4.1.1"
@@ -5368,6 +5415,26 @@ mock-property@~1.0.0:
     hasown "^2.0.0"
     isarray "^2.0.5"
 
+motion-dom@^12.4.10:
+  version "12.4.10"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.4.10.tgz#025886748e33e8ee77742eea7bd088b202e7c83a"
+  integrity sha512-ISP5u6FTceoD6qKdLupIPU/LyXBrxGox+P2e3mBbm1+pLdlBbwv01YENJr7+1WZnW5ucVKzFScYsV1eXTCG4Xg==
+  dependencies:
+    motion-utils "^12.4.10"
+
+motion-utils@^12.4.10:
+  version "12.4.10"
+  resolved "https://registry.yarnpkg.com/motion-utils/-/motion-utils-12.4.10.tgz#3d93acea5454419eaaad8d5e5425cb71cbfa1e7f"
+  integrity sha512-NPwZd94V013SwRf++jMrk2+HEBgPkeIE2RiOzhAuuQlqxMJPkKt/LXVh6Upl+iN8oarSGD2dlY5/bqgsYXDABA==
+
+motion@^12.4.10:
+  version "12.4.10"
+  resolved "https://registry.yarnpkg.com/motion/-/motion-12.4.10.tgz#d00c2b2c777032d1ac0d91ba2a7dd5bc602f6f54"
+  integrity sha512-AM21Lyfn7ZHO+nBuHJEA2REFgS3kUM83CLZnzM0ZY1/sVeKGkCtV4LF4O/YsQXyZ9mrUrrnTaUkKquS4eaIYjg==
+  dependencies:
+    framer-motion "^12.4.10"
+    tslib "^2.4.0"
+
 ms@^2.0.0, ms@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
@@ -6126,6 +6193,11 @@ react-hot-toast@^2.4.1:
   integrity sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==
   dependencies:
     goober "^2.1.10"
+
+react-is@^16.7.0:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 react-is@^18.2.0:
   version "18.3.1"
@@ -6995,7 +7067,7 @@ tslib@2.6.2:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
 
-tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1, tslib@^2.5.0, tslib@^2.5.3:
+tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.5.0, tslib@^2.5.3:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
