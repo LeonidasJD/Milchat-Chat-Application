@@ -26,6 +26,7 @@ const useLogin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userCreated, setUserCreated] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -56,6 +57,7 @@ const useLogin = () => {
   }, []);
 
   const onSubmitSignUp = async (data: SignUpFormValues) => {
+    setIsLoading(true);
     const formattedDate = dayjs(data.dateOfBirth).format("YYYY-MM-DD");
 
     try {
@@ -75,12 +77,14 @@ const useLogin = () => {
         email: data.email,
       });
       setUserCreated(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const onSubmitLogin = async (data: LoginFormValues) => {
+    setIsLoading(true);
     try {
       //firebase cloud funkcija za login korisnika
       const loginResults = await signInWithEmailAndPassword(
@@ -125,6 +129,7 @@ const useLogin = () => {
       }
 
       setIsLoggedIn(true);
+      setIsLoading(false);
     } catch (error: unknown) {
       //ALL ERRORS ARE FROM FIREBASE DOCS
       if (error instanceof FirebaseError) {
@@ -169,6 +174,7 @@ const useLogin = () => {
   };
 
   return {
+    isLoading,
     controlSignUp,
     handleSubmitSignUp,
     onSubmitSignUp,
