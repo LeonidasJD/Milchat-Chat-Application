@@ -56,11 +56,6 @@ const SideNav = () => {
               About Creator
             </NavLink>
           </li>
-          <li onClick={toggleMenu}>
-            <NavLink to="/statistics" className={active}>
-              Statistics
-            </NavLink>
-          </li>
         </ul>
         <Button color="dark" text="Logout" onClick={() => onSubmitLogout()} />
       </motion.nav>
