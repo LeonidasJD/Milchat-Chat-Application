@@ -11,6 +11,7 @@ import UserCreatedModal from "../../userCreatedModal/userCreatedModal.tsx";
 
 const Login = () => {
   const {
+    isLoading,
     controlSignUp,
     handleSubmitSignUp,
     onSubmitSignUp,
@@ -223,7 +224,11 @@ const Login = () => {
                     {String(errorsLogin.password.message)}
                   </span>
                 )}
-                <Button color="dark" type="submit" text="Login" />
+                <Button
+                  color="dark"
+                  type="submit"
+                  text={isLoading ? "Loading..." : "Login"}
+                />
               </form>
             </div>
           )}

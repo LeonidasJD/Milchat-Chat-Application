@@ -26,6 +26,7 @@ const useLogin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userCreated, setUserCreated] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -81,6 +82,7 @@ const useLogin = () => {
   };
 
   const onSubmitLogin = async (data: LoginFormValues) => {
+    setIsLoading(true);
     try {
       //firebase cloud funkcija za login korisnika
       const loginResults = await signInWithEmailAndPassword(
@@ -125,6 +127,7 @@ const useLogin = () => {
       }
 
       setIsLoggedIn(true);
+      setIsLoading(false);
     } catch (error: unknown) {
       //ALL ERRORS ARE FROM FIREBASE DOCS
       if (error instanceof FirebaseError) {
@@ -169,6 +172,7 @@ const useLogin = () => {
   };
 
   return {
+    isLoading,
     controlSignUp,
     handleSubmitSignUp,
     onSubmitSignUp,
