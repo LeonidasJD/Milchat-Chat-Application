@@ -160,7 +160,11 @@ const Login = () => {
                   </span>
                 )}
 
-                <Button color="dark" type="submit" text="Sign Up" />
+                <Button
+                  color="dark"
+                  type="submit"
+                  text={isLoading ? "Loading..." : "Sign Up"}
+                />
               </form>
               <p className="alreadyHaveAccount">
                 You aleready have account?{" "}

@@ -57,6 +57,7 @@ const useLogin = () => {
   }, []);
 
   const onSubmitSignUp = async (data: SignUpFormValues) => {
+    setIsLoading(true);
     const formattedDate = dayjs(data.dateOfBirth).format("YYYY-MM-DD");
 
     try {
@@ -76,6 +77,7 @@ const useLogin = () => {
         email: data.email,
       });
       setUserCreated(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
