@@ -1,3 +1,5 @@
+@import "../../../styles/mixins.scss";
+
 .data-wrapper {
   margin: 50px;
   display: flex;
@@ -5,12 +7,23 @@
   background: lightgray;
   padding: 50px;
   align-items: center;
+  @include respond(phone) {
+    margin: 20px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px 10px 10px;
+  }
 }
 .user-info {
   width: 80%;
   display: flex;
   gap: 20px;
   align-items: center;
+  @include respond(phone) {
+    flex-direction: column;
+    padding-top: 20px;
+  }
 }
 .user-data {
   display: flex;
@@ -43,6 +56,16 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  @include respond(phone) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .qrCodeWrapper {
+    @include respond(phone) {
+      scale: 0.7;
+    }
+  }
 }
 
 form {

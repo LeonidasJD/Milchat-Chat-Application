@@ -41,24 +41,19 @@ const SideNav = () => {
         )}
 
         <ul style={{ listStyle: "none", padding: 0 }}>
-          <li>
+          <li onClick={toggleMenu}>
             <NavLink to="/" className={active}>
               Chat Room
             </NavLink>
           </li>
-          <li>
+          <li onClick={toggleMenu}>
             <NavLink to="/profile" className={active}>
               Profile
             </NavLink>
           </li>
-          <li>
+          <li onClick={toggleMenu}>
             <NavLink to="/about" className={active}>
               About Creator
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/statistics" className={active}>
-              Statistics
             </NavLink>
           </li>
         </ul>

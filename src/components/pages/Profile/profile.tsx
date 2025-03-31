@@ -98,7 +98,7 @@ const Profile = () => {
             </div>
 
             <div className="edit-button">
-              <div>{<QrCode />}</div>
+              <div className="qrCodeWrapper">{<QrCode />}</div>
               <Button
                 onClick={() =>
                   handleOpenChangeProfileModal(currentUser?.userName ?? "")

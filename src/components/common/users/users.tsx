@@ -8,12 +8,18 @@ import { setSelectedUserData } from "../../../redux/slice/selectedUserSlice";
 import "./allUsers.scss";
 import { useDispatch } from "react-redux";
 import { Input } from "antd";
+import useMediaQuery from "../../../hooks/useMediaQuery";
 
-const UserList = () => {
+interface UserListProps {
+  onCloseModal?: () => void;
+}
+
+const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
   const [allUsersList, setAllUsersList] = useState<UsersList>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [finalFilteredUsers, setFinalFilteredUsers] = useState<UsersList>([]);
+  const { isDesktop } = useMediaQuery();
 
   const dispatch = useDispatch();
 
@@ -77,11 +83,12 @@ const UserList = () => {
   return (
     <div className="all-users-container">
       <div className="all-users-header">
-        <h1>All Friends</h1>
+        {isDesktop && <h1>All Friends</h1>}
+
         <Input.Search
+          className="search-input"
           placeholder="Search friend"
           onChange={(e) => onSearch(e.target.value)}
-          style={{ width: 200 }}
         />
       </div>
 
@@ -92,7 +99,13 @@ const UserList = () => {
           {hasUsers ? (
             <ul className="users-information">
               {usersToDisplay.map((user) => (
-                <li key={user.id} onClick={() => onSelectUser(user.id)}>
+                <li
+                  key={user.id}
+                  onClick={() => {
+                    onSelectUser(user.id);
+                    onCloseModal?.();
+                  }}
+                >
                   <p>{user.name}</p>
                   <span
                     style={{

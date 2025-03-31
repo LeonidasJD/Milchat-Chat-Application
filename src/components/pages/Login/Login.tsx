@@ -34,9 +34,6 @@ const Login = () => {
         <div className="header-links-wrapper">
           <ul>
             <li>
-              <p>Support</p>
-            </li>
-            <li>
               <p onClick={() => setIsLogin(false)}>Sign Up Free</p>
             </li>
             <li>
