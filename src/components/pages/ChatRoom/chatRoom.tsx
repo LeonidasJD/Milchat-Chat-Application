@@ -130,11 +130,14 @@ const ChatRoom = () => {
 
   return (
     <div className="chat-room-container">
-      <PageHeader
-        title="Chat Room"
-        fontColor="white"
-        backgroundColor="#2e1b3e"
-      />
+      {isDesktop && (
+        <PageHeader
+          title="Chat Room"
+          fontColor="white"
+          backgroundColor="#2e1b3e"
+        />
+      )}
+
       <div className="mainWrapper">
         {isMobile && (
           <button
