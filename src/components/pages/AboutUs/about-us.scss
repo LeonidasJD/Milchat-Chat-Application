@@ -1,3 +1,5 @@
+@import "../../../styles/mixins.scss";
+
 .about-data-wrapper {
   margin: 50px;
   display: flex;
@@ -13,5 +15,10 @@
   }
   .ant-image-mask {
     border-radius: 50%;
+  }
+
+  @include respond(phone) {
+    margin: 20px;
+    padding: 20px;
   }
 }
