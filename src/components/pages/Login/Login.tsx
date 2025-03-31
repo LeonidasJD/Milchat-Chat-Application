@@ -41,7 +41,7 @@ const Login = () => {
               <p onClick={() => setIsLogin(true)}>Login</p>
             </li>
           </ul>
-          <Space wrap>
+          {/* <Space wrap>
             <Select
               defaultValue="english"
               style={{ width: 120 }}
@@ -50,7 +50,7 @@ const Login = () => {
                 { value: "serbian", label: "Serbian" },
               ]}
             />
-          </Space>
+          </Space> */}
         </div>
       </div>
 
