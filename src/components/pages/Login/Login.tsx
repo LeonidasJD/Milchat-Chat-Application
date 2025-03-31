@@ -1,4 +1,4 @@
-import { Select, Space, Input, DatePicker } from "antd";
+import { Input, DatePicker } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Logo from "../../../assets/login/milchatLogo.png";
 import LoginBanner from "../../../assets/login/banner.png";
