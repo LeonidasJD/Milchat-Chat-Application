@@ -1,7 +1,7 @@
 import { QRCode, Space } from "antd";
 
 const QrCode = () => {
-  const text = "https://ant.design/";
+  const text = "https://milchat-82eed.web.app";
 
   return (
     <Space direction="vertical" align="center">
