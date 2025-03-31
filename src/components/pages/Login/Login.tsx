@@ -11,6 +11,7 @@ import UserCreatedModal from "../../userCreatedModal/userCreatedModal.tsx";
 
 const Login = () => {
   const {
+    isLoading,
     controlSignUp,
     handleSubmitSignUp,
     onSubmitSignUp,
@@ -40,7 +41,7 @@ const Login = () => {
               <p onClick={() => setIsLogin(true)}>Login</p>
             </li>
           </ul>
-          <Space wrap>
+          {/* <Space wrap>
             <Select
               defaultValue="english"
               style={{ width: 120 }}
@@ -49,7 +50,7 @@ const Login = () => {
                 { value: "serbian", label: "Serbian" },
               ]}
             />
-          </Space>
+          </Space> */}
         </div>
       </div>
 
@@ -159,7 +160,11 @@ const Login = () => {
                   </span>
                 )}
 
-                <Button color="dark" type="submit" text="Sign Up" />
+                <Button
+                  color="dark"
+                  type="submit"
+                  text={isLoading ? "Loading..." : "Sign Up"}
+                />
               </form>
               <p className="alreadyHaveAccount">
                 You aleready have account?{" "}
@@ -223,7 +228,11 @@ const Login = () => {
                     {String(errorsLogin.password.message)}
                   </span>
                 )}
-                <Button color="dark" type="submit" text="Login" />
+                <Button
+                  color="dark"
+                  type="submit"
+                  text={isLoading ? "Loading..." : "Login"}
+                />
               </form>
             </div>
           )}

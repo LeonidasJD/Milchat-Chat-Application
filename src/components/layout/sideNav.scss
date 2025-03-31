@@ -1,4 +1,12 @@
 @import "../../styles/mixins.scss";
+.menu-button {
+  background: #e6e6e6;
+  border: none;
+  border-radius: 20px;
+  margin: 5px 0px 5px 5px;
+  width: 16vw;
+  align-self: start;
+}
 nav {
   width: 200px;
   padding: 20px;

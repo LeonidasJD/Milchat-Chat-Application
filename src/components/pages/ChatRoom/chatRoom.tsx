@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db, auth } from "../../../firebase/firebase";
 import {
   collection,
@@ -93,14 +93,6 @@ const ChatRoom = () => {
 
   // FUNCTION FOR SENDING MESSAGES
 
-  // FUNCTION FOR OPEN AND CLOSING MODAL FOR FRIENDS LIST START
-
-  const handleOpenFriendsListModal = () => {
-    {
-      setIsFriendsListModalOpen(true);
-    }
-  };
-
   const sendMessage = async () => {
     if (newMessage.trim() === "" || !selectedUserId) return;
     try {
@@ -116,13 +108,36 @@ const ChatRoom = () => {
     }
   };
 
+  // FUNCTION FOR OPEN AND CLOSING MODAL FOR FRIENDS LIST START
+
+  const handleOpenFriendsListModal = () => {
+    {
+      setIsFriendsListModalOpen(true);
+    }
+  };
+
+  //  SMOOTH SCROLL TO BOTTOM OF MESSAGES WHEN NEW MESSAGE IS SENT OR ARRIVED
+  const messagesWrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (messagesWrapperRef.current) {
+      messagesWrapperRef.current.scrollTo({
+        top: messagesWrapperRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
   return (
     <div className="chat-room-container">
-      <PageHeader
-        title="Chat Room"
-        fontColor="white"
-        backgroundColor="#2e1b3e"
-      />
+      {isDesktop && (
+        <PageHeader
+          title="Chat Room"
+          fontColor="white"
+          backgroundColor="#2e1b3e"
+        />
+      )}
+
       <div className="mainWrapper">
         {isMobile && (
           <button
@@ -149,7 +164,7 @@ const ChatRoom = () => {
                 style={{ backgroundColor: userIsOnline ? "green" : "red" }}
               ></span>
             </div>
-            <div className="messages-wrapper">
+            <div className="messages-wrapper" ref={messagesWrapperRef}>
               {messages.map((message) => (
                 <div
                   key={message.id}
