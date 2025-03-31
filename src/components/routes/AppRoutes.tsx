@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from "../pages/AboutUs/aboutUs";
 import ChatRoom from "../pages/ChatRoom/chatRoom";
 import Profile from "../pages/Profile/profile";
-import Statistics from "../pages/Statistics/statistics";
 import ProtectedRoute from "../protected-route/ProtectedRoute";
 
 const router = () => {
@@ -19,7 +18,6 @@ const router = () => {
             { index: true, element: <ChatRoom /> },
             { path: "profile", element: <Profile /> },
             { path: "about", element: <AboutUs /> },
-            { path: "statistics", element: <Statistics /> },
           ],
         },
       ],
