@@ -1,4 +1,4 @@
-import { Input, DatePicker } from "antd";
+import { Input, DatePicker, Space, Select } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Logo from "../../../assets/login/milchatLogo.png";
 import LoginBanner from "../../../assets/login/banner.png";
@@ -8,6 +8,7 @@ import "./login.scss";
 import "../../../styles/input/inputField.scss";
 import { Controller } from "react-hook-form";
 import UserCreatedModal from "../../userCreatedModal/userCreatedModal.tsx";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const {
@@ -25,7 +26,17 @@ const Login = () => {
     userCreated,
     errorMessage,
   } = useLogin();
+  const { t, i18n } = useTranslation();
 
+  const handleChangeLanguage = (value: string) => {
+    const languageCode = value === "english" ? "en" : "sr";
+    i18n.changeLanguage(languageCode);
+  };
+
+  const languageOptions = [
+    { value: "english", label: t("englishLang") },
+    { value: "serbian", label: t("serbianLang") },
+  ];
   return (
     <div className="login-container">
       <div className="header">
@@ -35,22 +46,20 @@ const Login = () => {
         <div className="header-links-wrapper">
           <ul>
             <li>
-              <p onClick={() => setIsLogin(false)}>Sign Up Free</p>
+              <p onClick={() => setIsLogin(false)}>{t("headerSignUp")}</p>
             </li>
             <li>
-              <p onClick={() => setIsLogin(true)}>Login</p>
+              <p onClick={() => setIsLogin(true)}>{t("headerLogin")}</p>
             </li>
           </ul>
-          {/* <Space wrap>
+          <Space wrap>
             <Select
               defaultValue="english"
               style={{ width: 120 }}
-              options={[
-                { value: "english", label: "English" },
-                { value: "serbian", label: "Serbian" },
-              ]}
+              onChange={handleChangeLanguage}
+              options={languageOptions}
             />
-          </Space> */}
+          </Space>
         </div>
       </div>
 
@@ -186,9 +195,9 @@ const Login = () => {
                 <span style={{ color: "white" }}>{errorMessage}</span>
               )}
 
-              <h1>LOGIN</h1>
+              <h1>{t("login")}</h1>
               <form onSubmit={handleSubmitLogin(onSubmitLogin)}>
-                <label className="login-label">Email</label>
+                <label className="login-label">{t("email")}</label>
                 <Controller
                   name="email"
                   control={controlLogin}
@@ -207,7 +216,7 @@ const Login = () => {
                   </span>
                 )}
 
-                <label className="login-label">Password</label>
+                <label className="login-label">{t("password")}</label>
                 <Controller
                   name="password"
                   control={controlLogin}
@@ -231,7 +240,7 @@ const Login = () => {
                 <Button
                   color="dark"
                   type="submit"
-                  text={isLoading ? "Loading..." : "Login"}
+                  text={isLoading ? t("loading") : t("headerLogin")}
                 />
               </form>
             </div>

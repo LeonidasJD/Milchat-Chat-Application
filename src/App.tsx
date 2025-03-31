@@ -1,5 +1,6 @@
 import AppRouter from "./components/routes/AppRoutes";
 import { Toaster } from "react-hot-toast";
+import "./i18n";
 
 const App = () => {
   return (

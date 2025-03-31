@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import { MyUser } from "../../../redux/types/myUserType.ts";
 import { useDispatch } from "react-redux";
 import { resetUser, setCurrentUser } from "../../../redux/slice/userSlice.ts";
+import { useTranslation } from "react-i18next";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -31,6 +32,8 @@ const useLogin = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
 
   const {
     control: controlSignUp,
@@ -143,7 +146,7 @@ const useLogin = () => {
         } else if (error.message === "Firebase: Error (auth/wrong-password).") {
           setErrorMessage("Incorrect password. Please try again.");
         } else if (error.message === "Firebase: Error (auth/invalid-email).") {
-          setErrorMessage("Invalid email. Please enter a valid email address.");
+          setErrorMessage(t("invalidEmailError"));
         } else {
           setErrorMessage(
             "An unexpected error occurred. Please try again later."
