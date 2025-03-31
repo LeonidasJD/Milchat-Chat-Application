@@ -18,6 +18,7 @@ import UserList from "../../common/users/users";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import GlobalModal from "../../common/global-modal/globalModal";
+import useMediaQuery from "../../../hooks/useMediaQuery";
 
 const ChatRoom = () => {
   interface Message {
@@ -36,6 +37,9 @@ const ChatRoom = () => {
   const selectedUserName = useSelector(
     (state: RootState) => state.setSelectedUserData.userName
   );
+  const [isFriendsListModalOpen, setIsFriendsListModalOpen] = useState(false);
+
+  const { isDesktop, isMobile } = useMediaQuery();
 
   // PRACENJE STATUSA KORISNIKA DA LI JE ONLINE ILI OFFLINE
 
@@ -89,6 +93,14 @@ const ChatRoom = () => {
 
   // FUNCTION FOR SENDING MESSAGES
 
+  // FUNCTION FOR OPEN AND CLOSING MODAL FOR FRIENDS LIST START
+
+  const handleOpenFriendsListModal = () => {
+    {
+      setIsFriendsListModalOpen(true);
+    }
+  };
+
   const sendMessage = async () => {
     if (newMessage.trim() === "" || !selectedUserId) return;
     try {
@@ -112,9 +124,23 @@ const ChatRoom = () => {
         backgroundColor="#2e1b3e"
       />
       <div className="mainWrapper">
-        <div className="users-wrapper">
-          <UserList></UserList>
-        </div>
+        {isMobile && (
+          <button
+            className="chooseFriendButton"
+            onClick={() => {
+              handleOpenFriendsListModal();
+            }}
+          >
+            Friends
+          </button>
+        )}
+
+        {isDesktop && (
+          <div className="users-wrapper">
+            <UserList></UserList>
+          </div>
+        )}
+
         {selectedUserId ? (
           <div className="allChat">
             <div className="receiverDataBar">
@@ -128,59 +154,68 @@ const ChatRoom = () => {
                 <div
                   key={message.id}
                   style={{
-                    margin: "10px 0",
-                    textAlign:
+                    backgroundColor:
                       message.senderId === auth?.currentUser?.uid
-                        ? "right"
-                        : "left",
+                        ? "#dcf8c6"
+                        : "#2e1b3e",
+                    padding: "8px",
+                    borderRadius: "10px",
+
+                    alignSelf:
+                      message.senderId === auth?.currentUser?.uid
+                        ? "flex-end"
+                        : "flex-start",
+                    maxWidth: "220px",
+                    wordWrap: "break-word",
                   }}
                 >
                   <span
                     style={{
-                      backgroundColor:
-                        message.senderId === auth?.currentUser?.uid
-                          ? "#dcf8c6"
-                          : "#2e1b3e",
-                      padding: "8px",
-                      borderRadius: "10px",
                       color:
                         message.senderId === auth?.currentUser?.uid
                           ? "black"
                           : "white",
+                      wordWrap: "break-word",
                     }}
                   >
                     {message.text}
                   </span>
                 </div>
               ))}
-              <div className="input-wrapper">
-                <Input
-                  className="sendMessageInput"
-                  type="text"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type a message..."
-                />
+            </div>
+            <div className="input-wrapper">
+              <Input
+                className="sendMessageInput"
+                type="text"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type a message..."
+              />
 
-                <Button
-                  type="primary"
-                  shape="round"
-                  icon={<SendOutlined />}
-                  size={"large"}
-                  style={{ backgroundColor: "#2e1b3e", marginTop: "15px" }}
-                  onClick={sendMessage}
-                />
-              </div>
+              <Button
+                type="primary"
+                shape="round"
+                icon={<SendOutlined />}
+                size={"large"}
+                style={{ backgroundColor: "#2e1b3e" }}
+                onClick={sendMessage}
+              />
             </div>
           </div>
         ) : (
           <NoSelectedUser></NoSelectedUser>
         )}
 
-        <GlobalModal handleCancel={() => {}} title="Users" isModalOpen={false}>
-          <div className="users-wrapper">
-            <UserList></UserList>
-          </div>
+        <GlobalModal
+          handleCancel={() => {
+            setIsFriendsListModalOpen(false);
+          }}
+          title="All friends"
+          isModalOpen={isFriendsListModalOpen}
+        >
+          <UserList
+            onCloseModal={() => setIsFriendsListModalOpen(false)}
+          ></UserList>
         </GlobalModal>
       </div>
     </div>
