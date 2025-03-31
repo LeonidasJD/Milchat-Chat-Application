@@ -152,7 +152,7 @@ const useLogin = () => {
 
     try {
       if (auth.currentUser?.uid) {
-        updateDoc(doc(db, "users", auth.currentUser?.uid), {
+        await updateDoc(doc(db, "users", auth.currentUser?.uid), {
           isOnline: false,
         });
       }

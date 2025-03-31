@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { motion } from "framer-motion";
 import useMediaQuery from "../../hooks/useMediaQuery.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SideNav = () => {
   const { onSubmitLogout } = useLogin();
@@ -18,6 +18,18 @@ const SideNav = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -33,10 +45,17 @@ const SideNav = () => {
         transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         {isMobile && (
-          <div>
+          <div style={{ display: "flex" }}>
             <button className="close-button" onClick={toggleMenu}>
               <IoMdClose color="white" size={30} />
             </button>
+            {isMobile && (
+              <Button
+                color="dark"
+                text="Logout"
+                onClick={() => onSubmitLogout()}
+              />
+            )}
           </div>
         )}
 
@@ -57,7 +76,9 @@ const SideNav = () => {
             </NavLink>
           </li>
         </ul>
-        <Button color="dark" text="Logout" onClick={() => onSubmitLogout()} />
+        {!isMobile && (
+          <Button color="dark" text="Logout" onClick={() => onSubmitLogout()} />
+        )}
       </motion.nav>
     </>
   );
