@@ -142,7 +142,9 @@ const ChatRoom = () => {
   useEffect(() => {
     if (!selectedUserId) return;
 
-    // Praćenje statusa kucanja od strane selektovanog korisnika
+    /**pracenje  statusa kucanja od strane selektovanog korisnika,
+     *  korisnik ce videti animaciju kuckanja kada korisnik sa kojim se dopisuje krene da kuca a ne dok on sam kuca,
+     * zato sto sam uzeo referencu na status kucanja selektovanog korisnika sa kime se dopisujem i ako se njegov status menja prikazace se animacija  */
     const typingRef = ref(realtimeDb, `users/${selectedUserId}/isTyping`);
 
     const unsubscribe = onValue(typingRef, (snapshot) => {
@@ -161,7 +163,7 @@ const ChatRoom = () => {
   const handleTyping = () => {
     if (selectedUserId) {
       if (auth?.currentUser?.uid) {
-        updateTypingStatus(auth.currentUser.uid, true); // Korisnik je počeo da kuca
+        updateTypingStatus(auth.currentUser.uid, true); // azurira realtime db na true
       }
     }
   };
@@ -170,18 +172,18 @@ const ChatRoom = () => {
   const handleStopTyping = () => {
     if (selectedUserId) {
       if (auth?.currentUser?.uid) {
-        updateTypingStatus(auth.currentUser.uid, false); // Korisnik je prestao da kuca
+        updateTypingStatus(auth.currentUser.uid, false); // azurira realtime db na false
       }
     }
   };
 
-  // Dodajte event listener za "input" u tekstualnoj oblasti
+  // useEffect se pokrece kada se promeni vrednost newMessage tj kada krene korisnik da kuca , ako se vrednost ne promeni 1.5 sekunde pokrece se funkcija handleStopTyping.
   useEffect(() => {
     const typingTimer = setTimeout(() => {
-      handleStopTyping(); // Korisnik prestaje da kuca
-    }, 2000); // Ako korisnik ne kuca 1 sekundu, pretpostavljamo da je završio
+      handleStopTyping();
+    }, 1500);
 
-    return () => clearTimeout(typingTimer); // Očisti timer kada se promeni stanje
+    return () => clearTimeout(typingTimer);
   }, [newMessage]);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
