@@ -179,7 +179,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const typingTimer = setTimeout(() => {
       handleStopTyping(); // Korisnik prestaje da kuca
-    }, 5000); // Ako korisnik ne kuca 1 sekundu, pretpostavljamo da je završio
+    }, 1000); // Ako korisnik ne kuca 1 sekundu, pretpostavljamo da je završio
 
     return () => clearTimeout(typingTimer); // Očisti timer kada se promeni stanje
   }, [newMessage]);
