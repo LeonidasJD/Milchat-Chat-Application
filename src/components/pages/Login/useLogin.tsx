@@ -138,19 +138,15 @@ const useLogin = () => {
       //ALL ERRORS ARE FROM FIREBASE DOCS
       if (error instanceof FirebaseError) {
         if (error.message === "Firebase: Error (auth/invalid-credential).") {
-          setErrorMessage(
-            "Invalid credentials. Please check your email and password."
-          );
+          setErrorMessage(t("invalidCredentialsError"));
         } else if (error.message === "Firebase: Error (auth/user-not-found).") {
-          setErrorMessage("No user found with this email.");
+          setErrorMessage(t("noUserFoundError"));
         } else if (error.message === "Firebase: Error (auth/wrong-password).") {
           setErrorMessage("Incorrect password. Please try again.");
         } else if (error.message === "Firebase: Error (auth/invalid-email).") {
           setErrorMessage(t("invalidEmailError"));
         } else {
-          setErrorMessage(
-            "An unexpected error occurred. Please try again later."
-          );
+          setErrorMessage(t("unexceptedError"));
         }
       }
       setIsLoading(false);

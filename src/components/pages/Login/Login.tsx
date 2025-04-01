@@ -201,11 +201,11 @@ const Login = () => {
                 <Controller
                   name="email"
                   control={controlLogin}
-                  rules={{ required: "Email is required*" }}
+                  rules={{ required: t("requiredEmailError") }}
                   render={({ field }) => (
                     <Input
                       type="text"
-                      placeholder="Enter your email address"
+                      placeholder={t("enterEmailAddress")}
                       {...field}
                     />
                   )}
@@ -220,11 +220,11 @@ const Login = () => {
                 <Controller
                   name="password"
                   control={controlLogin}
-                  rules={{ required: "Password is required*" }}
+                  rules={{ required: t("requiredPasswordError") }}
                   render={({ field }) => (
                     <Input.Password
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t("enterPassword")}
                       iconRender={(visible) =>
                         visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                       }
