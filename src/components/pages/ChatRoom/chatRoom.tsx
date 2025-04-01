@@ -10,7 +10,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { realtimeDb } from "../../../firebase/firebase";
-import { ref, set, onValue, update } from "firebase/database";
+import { ref, set, onValue } from "firebase/database";
 import PageHeader from "../../common/page-header/page-header";
 import NoSelectedUser from "../../common/no-selected-user/no-selected-user";
 import "./chatRoom.scss";
@@ -179,7 +179,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const typingTimer = setTimeout(() => {
       handleStopTyping(); // Korisnik prestaje da kuca
-    }, 5000); // Ako korisnik ne kuca 1 sekundu, pretpostavljamo da je završio
+    }, 2000); // Ako korisnik ne kuca 1 sekundu, pretpostavljamo da je završio
 
     return () => clearTimeout(typingTimer); // Očisti timer kada se promeni stanje
   }, [newMessage]);
