@@ -9,6 +9,8 @@ import {
   serverTimestamp,
   doc,
 } from "firebase/firestore";
+import { realtimeDb } from "../../../firebase/firebase";
+import { ref, set, onValue, update } from "firebase/database";
 import PageHeader from "../../common/page-header/page-header";
 import NoSelectedUser from "../../common/no-selected-user/no-selected-user";
 import "./chatRoom.scss";
@@ -19,6 +21,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import GlobalModal from "../../common/global-modal/globalModal";
 import useMediaQuery from "../../../hooks/useMediaQuery";
+import TypingAnimation from "../../common/typing-animation/typing-animation";
 
 const ChatRoom = () => {
   interface Message {
@@ -38,6 +41,7 @@ const ChatRoom = () => {
     (state: RootState) => state.setSelectedUserData.userName
   );
   const [isFriendsListModalOpen, setIsFriendsListModalOpen] = useState(false);
+  const [isUserTyping, setIsUserTyping] = useState(false);
 
   const { isDesktop, isMobile } = useMediaQuery();
 
@@ -128,6 +132,63 @@ const ChatRoom = () => {
     }
   }, [messages]);
 
+  //FUNCTION FOR UPDATING STATUS WHEN USER START TYPING
+
+  //funkcija koja azurira status kucanja korisnika u realtime database
+  const updateTypingStatus = (userId: string, isTyping: boolean) => {
+    set(ref(realtimeDb, `users/${userId}/isTyping`), isTyping);
+  };
+
+  useEffect(() => {
+    if (!selectedUserId) return;
+
+    // Praćenje statusa kucanja od strane selektovanog korisnika
+    const typingRef = ref(realtimeDb, `users/${selectedUserId}/isTyping`);
+
+    const unsubscribe = onValue(typingRef, (snapshot) => {
+      const isTyping = snapshot.val();
+      if (isTyping) {
+        setIsUserTyping(true);
+      } else {
+        setIsUserTyping(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [selectedUserId]);
+
+  // Funkcija koja se poziva kada korisnik počne da kuca
+  const handleTyping = () => {
+    if (selectedUserId) {
+      if (auth?.currentUser?.uid) {
+        updateTypingStatus(auth.currentUser.uid, true); // Korisnik je počeo da kuca
+      }
+    }
+  };
+
+  // Funkcija koja se poziva kada korisnik prestane da kuca
+  const handleStopTyping = () => {
+    if (selectedUserId) {
+      if (auth?.currentUser?.uid) {
+        updateTypingStatus(auth.currentUser.uid, false); // Korisnik je prestao da kuca
+      }
+    }
+  };
+
+  // Dodajte event listener za "input" u tekstualnoj oblasti
+  useEffect(() => {
+    const typingTimer = setTimeout(() => {
+      handleStopTyping(); // Korisnik prestaje da kuca
+    }, 5000); // Ako korisnik ne kuca 1 sekundu, pretpostavljamo da je završio
+
+    return () => clearTimeout(typingTimer); // Očisti timer kada se promeni stanje
+  }, [newMessage]);
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewMessage(e.target.value);
+    handleTyping();
+  };
+
   return (
     <div className="chat-room-container">
       {isDesktop && (
@@ -198,12 +259,17 @@ const ChatRoom = () => {
                 </div>
               ))}
             </div>
+            <div className="typing-idicator-wrapper">
+              {isUserTyping && <TypingAnimation />}
+            </div>
             <div className="input-wrapper">
               <Input
                 className="sendMessageInput"
                 type="text"
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={(e) => {
+                  handleMessageChange(e);
+                }}
                 placeholder="Type a message..."
               />
 
