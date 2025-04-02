@@ -111,6 +111,13 @@ const useLogin = () => {
         const docRef = doc(db, "users", auth.currentUser?.uid);
         const userResult = await getDoc(docRef);
 
+        //ako postoji korisnik postavljamo njegov access i refresh token u lokal storage
+        const idToken = await loginUser.getIdToken();
+        const refreshToken = loginUser.refreshToken;
+
+        localStorage.setItem("accessToken", idToken);
+        localStorage.setItem("refreshToken", refreshToken);
+
         const mappedUser: MyUser = {
           displayName: loginUser.displayName || "",
           email: loginUser.email || "",
@@ -138,19 +145,15 @@ const useLogin = () => {
       //ALL ERRORS ARE FROM FIREBASE DOCS
       if (error instanceof FirebaseError) {
         if (error.message === "Firebase: Error (auth/invalid-credential).") {
-          setErrorMessage(
-            "Invalid credentials. Please check your email and password."
-          );
+          setErrorMessage(t("invalidCredentialsError"));
         } else if (error.message === "Firebase: Error (auth/user-not-found).") {
-          setErrorMessage("No user found with this email.");
+          setErrorMessage(t("noUserFoundError"));
         } else if (error.message === "Firebase: Error (auth/wrong-password).") {
           setErrorMessage("Incorrect password. Please try again.");
         } else if (error.message === "Firebase: Error (auth/invalid-email).") {
           setErrorMessage(t("invalidEmailError"));
         } else {
-          setErrorMessage(
-            "An unexpected error occurred. Please try again later."
-          );
+          setErrorMessage(t("unexceptedError"));
         }
       }
       setIsLoading(false);
@@ -168,6 +171,8 @@ const useLogin = () => {
       }
       await signOut(auth);
       console.log("current user", auth.currentUser); //IF USER IS NULL IT IS CORRECT LOGOUT
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       dispatch(resetUser());
 
       navigate("/login");
