@@ -111,6 +111,13 @@ const useLogin = () => {
         const docRef = doc(db, "users", auth.currentUser?.uid);
         const userResult = await getDoc(docRef);
 
+        //ako postoji korisnik postavljamo njegov access i refresh token u lokal storage
+        const idToken = await loginUser.getIdToken();
+        const refreshToken = loginUser.refreshToken;
+
+        localStorage.setItem("accessToken", idToken);
+        localStorage.setItem("refreshToken", refreshToken);
+
         const mappedUser: MyUser = {
           displayName: loginUser.displayName || "",
           email: loginUser.email || "",
@@ -164,6 +171,8 @@ const useLogin = () => {
       }
       await signOut(auth);
       console.log("current user", auth.currentUser); //IF USER IS NULL IT IS CORRECT LOGOUT
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
       dispatch(resetUser());
 
       navigate("/login");
