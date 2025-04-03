@@ -1,6 +1,6 @@
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { auth, db } from "../../../firebase/firebase";
+import { auth, db, realtimeDb } from "../../../firebase/firebase";
 import { UsersList } from "./types/allUsersType";
 import toast from "react-hot-toast";
 import GlobalLoader from "../global-loader/global-loader";
@@ -9,6 +9,7 @@ import "./allUsers.scss";
 import { useDispatch } from "react-redux";
 import { Input } from "antd";
 import useMediaQuery from "../../../hooks/useMediaQuery";
+import { get, ref } from "firebase/database";
 
 interface UserListProps {
   onCloseModal?: () => void;
@@ -36,8 +37,28 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
           name: doc.data().name,
           isOnline: doc.data().isOnline,
         }));
-        setAllUsersList(usersList);
-        setIsLoading(false);
+
+        //prolazimo kroz niz svih korisnika i za svakog korisnika pozviamo iz realtime database status
+        const getUsersWithStatus = async () => {
+          const usersWithStatus = await Promise.all(
+            usersList.map(async (user) => {
+              const userStatusRef = ref(realtimeDb, `/status/${user.id}`);
+              const userStatusResult = await get(userStatusRef);
+              console.log(userStatusResult.val());
+
+              return {
+                ...user,
+                status: userStatusResult.val()?.state || "disconected",
+              };
+            })
+          );
+
+          console.log("user with status", usersWithStatus);
+          setAllUsersList(usersWithStatus);
+          setIsLoading(false);
+        };
+
+        getUsersWithStatus();
       },
       () => {
         toast.error("Error fetching users");
@@ -109,10 +130,11 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
                   <p>{user.name}</p>
                   <span
                     style={{
-                      backgroundColor: user.isOnline ? "green" : "red",
+                      backgroundColor:
+                        user.status === "connected" ? "green" : "red",
                     }}
                     className={`user-status ${
-                      user.isOnline ? "online" : "offline"
+                      user.status ? "connected" : "disconnected"
                     }`}
                   ></span>
                 </li>
