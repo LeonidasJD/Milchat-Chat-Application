@@ -20,13 +20,13 @@ const useUserStatus = () => {
           state: "online",
           lastChanged: serverTimestamp(),
         });
-
-        // Postavi da bude offline kad se korisnik diskonektuje
-        onDisconnect(userStatusRef).set({
-          state: "offline",
-          lastChanged: serverTimestamp(),
-        });
       }
+
+      // Postavi da bude offline kad se korisnik diskonektuje
+      onDisconnect(userStatusRef).set({
+        state: "offline",
+        lastChanged: serverTimestamp(),
+      });
     });
 
     return () => unsubscribe();
