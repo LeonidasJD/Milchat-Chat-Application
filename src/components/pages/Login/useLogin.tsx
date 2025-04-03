@@ -14,13 +14,14 @@ import {
   getAuth,
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
-import { auth, db } from "../../../firebase/firebase.ts";
+import { auth, db, realtimeDb } from "../../../firebase/firebase.ts";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import dayjs from "dayjs";
 import { MyUser } from "../../../redux/types/myUserType.ts";
 import { useDispatch } from "react-redux";
 import { resetUser, setCurrentUser } from "../../../redux/slice/userSlice.ts";
 import { useTranslation } from "react-i18next";
+import { ref, set } from "firebase/database";
 
 const useLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -100,8 +101,15 @@ const useLogin = () => {
 
       //kada se korisnik uloguje upisujemo u bazu da je online
       if (loginUser && auth.currentUser?.uid) {
+        const userStatusRef = ref(
+          realtimeDb,
+          `/status/${auth.currentUser?.uid}`
+        );
         updateDoc(doc(db, "users", auth.currentUser?.uid), {
           isOnline: true,
+        });
+        await set(userStatusRef, {
+          state: "connected",
         });
       }
 
@@ -163,10 +171,15 @@ const useLogin = () => {
   const onSubmitLogout = async () => {
     const auth = getAuth();
 
+    const userStatusRef = ref(realtimeDb, `/status/${auth.currentUser?.uid}`);
+
     try {
       if (auth.currentUser?.uid) {
         await updateDoc(doc(db, "users", auth.currentUser?.uid), {
           isOnline: false,
+        });
+        await set(userStatusRef, {
+          state: "disconnected",
         });
       }
       await signOut(auth);
