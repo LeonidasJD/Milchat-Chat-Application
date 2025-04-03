@@ -9,7 +9,7 @@ import "./allUsers.scss";
 import { useDispatch } from "react-redux";
 import { Input } from "antd";
 import useMediaQuery from "../../../hooks/useMediaQuery";
-import { get, ref } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 
 interface UserListProps {
   onCloseModal?: () => void;
@@ -39,22 +39,25 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
         }));
 
         //prolazimo kroz niz svih korisnika i za svakog korisnika pozviamo iz realtime database status
-        const getUsersWithStatus = async () => {
-          const usersWithStatus = await Promise.all(
-            usersList.map(async (user) => {
-              const userStatusRef = ref(realtimeDb, `/status/${user.id}`);
-              const userStatusResult = await get(userStatusRef);
-              console.log(userStatusResult.val());
+        const getUsersWithStatus = () => {
+          setIsLoading(true);
 
-              return {
-                ...user,
-                status: userStatusResult.val()?.state || "disconected",
-              };
-            })
-          );
+          const updatedUsersList = usersList.map((user) => {
+            const userStatusRef = ref(realtimeDb, `/status/${user.id}`);
 
-          console.log("user with status", usersWithStatus);
-          setAllUsersList(usersWithStatus);
+            onValue(userStatusRef, (snapshot) => {
+              const status = snapshot.val()?.state || "disconnected";
+
+              // Ažuriramo stanje sa novim statusom korisnika
+              setAllUsersList((prevUsers) =>
+                prevUsers.map((u) => (u.id === user.id ? { ...u, status } : u))
+              );
+            });
+
+            return { ...user, status: "loading..." }; // Privremeni status dok ne stigne iz baze
+          });
+
+          setAllUsersList(updatedUsersList); // Inicijalno postavimo korisnike
           setIsLoading(false);
         };
 
