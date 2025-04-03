@@ -45,10 +45,12 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
           const updatedUsersList = usersList.map((user) => {
             const userStatusRef = ref(realtimeDb, `/status/${user.id}`);
 
+            // Uklanjamo prethodne event listenere da izbegnemo dupliranje
+            off(userStatusRef);
+
             onValue(userStatusRef, (snapshot) => {
               const status = snapshot.val()?.state || "disconnected";
 
-              // Ažuriramo stanje sa novim statusom korisnika
               setAllUsersList((prevUsers) =>
                 prevUsers.map((u) => (u.id === user.id ? { ...u, status } : u))
               );
@@ -57,7 +59,7 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
             return { ...user, status: "loading..." }; // Privremeni status dok ne stigne iz baze
           });
 
-          setAllUsersList(updatedUsersList); // Inicijalno postavimo korisnike
+          setAllUsersList(updatedUsersList);
           setIsLoading(false);
         };
 
