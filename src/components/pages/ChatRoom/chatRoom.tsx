@@ -32,7 +32,9 @@ const ChatRoom = () => {
   }
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [userIsOnline, setUserIsOnline] = useState<boolean>(false);
+  const [allUserStatuses, setAllUserStatuses] = useState<
+    Record<string, boolean>
+  >({});
   const selectedUserId = useSelector(
     (state: RootState) => state.setSelectedUserData.userId
   );
@@ -47,23 +49,24 @@ const ChatRoom = () => {
   // PRACENJE STATUSA KORISNIKA DA LI JE ONLINE ILI OFFLINE
 
   useEffect(() => {
-    if (!selectedUserId) return;
+    const statusRef = ref(realtimeDb, "/status");
 
-    const userStatusRef = ref(realtimeDb, `/status/${selectedUserId}`);
+    const unsubscribe = onValue(statusRef, (snapshot) => {
+      const statuses = snapshot.val(); // { uid1: {state: "connected"}, uid2: {state: "disconnected"} }
 
-    const unsubscribe = onValue(userStatusRef, (snapshot) => {
-      const data = snapshot.val()?.state;
-      if (data === "connected") {
-        setUserIsOnline(true);
-      } else if (data === "disconnected" || data === "undefined") {
-        setUserIsOnline(false);
-      }
+      if (!statuses) return;
+
+      const statusMap: Record<string, boolean> = {};
+
+      Object.entries(statuses).forEach(([uid, statusData]: any) => {
+        statusMap[uid] = statusData.state === "connected";
+      });
+
+      setAllUserStatuses(statusMap);
     });
 
-    return () => {
-      unsubscribe();
-    };
-  }, [selectedUserId]);
+    return () => unsubscribe();
+  }, []);
 
   // HOOK FOR FETCHING MESSAGES FROM DATABASE
   useEffect(() => {
@@ -221,7 +224,11 @@ const ChatRoom = () => {
             <div className="receiverDataBar">
               <h3>{selectedUserName}</h3>
               <span
-                style={{ backgroundColor: userIsOnline ? "green" : "red" }}
+                style={{
+                  backgroundColor: allUserStatuses[selectedUserId]
+                    ? "green"
+                    : "red",
+                }}
               ></span>
             </div>
             <div className="messages-wrapper" ref={messagesWrapperRef}>
