@@ -9,10 +9,8 @@ import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../../redux/slice/userSlice";
 import "./mainLayout.scss";
 import toast from "react-hot-toast";
-import useUserStatus from "../../hooks/useUserStatus";
 
 const MainLayout = () => {
-  useUserStatus();
   const dispatch = useDispatch();
 
   //kada refreshujemo aplikaciju na globalnom nivou azuriramo redux sa trenutnim korisnikom
