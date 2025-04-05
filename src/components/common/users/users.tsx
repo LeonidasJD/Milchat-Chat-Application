@@ -17,6 +17,10 @@ interface UserListProps {
 
 const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
   const [allUsersList, setAllUsersList] = useState<UsersList>([]);
+  const [usersFromFirestore, setUsersFromFirestore] = useState<UsersList>([]);
+  const [statuses, setStatuses] = useState<Record<string, { state: string }>>(
+    {}
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [finalFilteredUsers, setFinalFilteredUsers] = useState<UsersList>([]);
@@ -25,9 +29,6 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // funkcija za preuzimanje svih registrovanih korisnika
-    //koristimo onSnapshot listener za realtime update podataka
-
     const unsubscribe = onSnapshot(
       collection(db, "users"),
       (snapshot) => {
@@ -36,39 +37,34 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
           email: doc.data().email,
           name: doc.data().name,
           isOnline: doc.data().isOnline,
-          status: "disconnected",
         }));
-
-        setAllUsersList(usersList);
-        setIsLoading(false);
+        setUsersFromFirestore(usersList);
       },
-      () => {
-        toast.error("Error fetching users");
-        setIsLoading(false);
-      }
+      () => toast.error("Error fetching users")
     );
 
-    return () => unsubscribe(); // Cleanup listener-a
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     const statusRef = ref(realtimeDb, "/status");
 
     const unsubscribe = onValue(statusRef, (snapshot) => {
-      const statuses = snapshot.val();
-
-      if (!statuses) return;
-
-      setAllUsersList((prevUsers) =>
-        prevUsers.map((user) => ({
-          ...user,
-          status: statuses[user.id]?.state || "disconnected",
-        }))
-      );
+      const statusesData = snapshot.val() || {};
+      setStatuses(statusesData);
     });
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const merged = usersFromFirestore.map((user) => ({
+      ...user,
+      status: statuses[user.id]?.state || "disconnected",
+    }));
+
+    setAllUsersList(merged);
+  }, [usersFromFirestore, statuses]);
 
   const onSelectUser = (selectedUserId: string) => {
     const selectedUserName = allUsersList.find(

@@ -3,7 +3,6 @@ export interface SingleUser {
   email: string;
   name: string;
   isOnline: boolean;
-  status?: string; // "connected" or "disconnected"
 }
 
 export type UsersList = SingleUser[];
