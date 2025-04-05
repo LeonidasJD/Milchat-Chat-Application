@@ -68,7 +68,7 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
 
     return () => unsubscribe();
   }, []);
-  console.log("allUsersList", allUsersList);
+
   const onSelectUser = (selectedUserId: string) => {
     const selectedUserName = allUsersList.find(
       (user) => user.id === selectedUserId
