@@ -9,7 +9,7 @@ import "./allUsers.scss";
 import { useDispatch } from "react-redux";
 import { Input } from "antd";
 import useMediaQuery from "../../../hooks/useMediaQuery";
-import { off, onValue, ref } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 
 interface UserListProps {
   onCloseModal?: () => void;
