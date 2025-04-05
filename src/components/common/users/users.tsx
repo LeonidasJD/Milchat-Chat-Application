@@ -36,6 +36,7 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
           email: doc.data().email,
           name: doc.data().name,
           isOnline: doc.data().isOnline,
+          status: "disconnected",
         }));
 
         setAllUsersList(usersList);
