@@ -7,7 +7,6 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
-  doc,
 } from "firebase/firestore";
 import { realtimeDb } from "../../../firebase/firebase";
 import { ref, set, onValue } from "firebase/database";
@@ -50,22 +49,20 @@ const ChatRoom = () => {
   useEffect(() => {
     if (!selectedUserId) return;
 
-    const useRef = doc(db, "users", selectedUserId);
+    const userStatusRef = ref(realtimeDb, `/status/${selectedUserId}`);
 
-    const unsubscribe = onSnapshot(useRef, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        // user is online
-        const userData = docSnapshot.data();
-        if (userData.isOnline && userData.isOnline !== undefined) {
-          setUserIsOnline(true);
-        } else {
-          // user is offline
-          setUserIsOnline(false);
-        }
+    const unsubscribe = onValue(userStatusRef, (snapshot) => {
+      const data = snapshot.val()?.state;
+      if (data === "connected") {
+        setUserIsOnline(true);
+      } else if (data === "disconnected" || data === "undefined") {
+        setUserIsOnline(false);
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, [selectedUserId]);
 
   // HOOK FOR FETCHING MESSAGES FROM DATABASE
