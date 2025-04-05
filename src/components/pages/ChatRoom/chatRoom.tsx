@@ -52,7 +52,7 @@ const ChatRoom = () => {
     const statusRef = ref(realtimeDb, "/status");
 
     const unsubscribe = onValue(statusRef, (snapshot) => {
-      const statuses = snapshot.val(); // { uid1: {state: "connected"}, uid2: {state: "disconnected"} }
+      const statuses = snapshot.val();
 
       if (!statuses) return;
 
