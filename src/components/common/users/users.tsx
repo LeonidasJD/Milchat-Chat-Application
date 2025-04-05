@@ -38,32 +38,8 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
           isOnline: doc.data().isOnline,
         }));
 
-        //prolazimo kroz niz svih korisnika i za svakog korisnika pozviamo iz realtime database status
-        const getUsersWithStatus = () => {
-          setIsLoading(true);
-
-          const updatedUsersList = usersList.map((user) => {
-            const userStatusRef = ref(realtimeDb, `/status/${user.id}`);
-
-            // Uklanjamo prethodne event listenere da izbegnemo dupliranje
-            off(userStatusRef);
-
-            onValue(userStatusRef, (snapshot) => {
-              const status = snapshot.val()?.state || "disconnected";
-
-              setAllUsersList((prevUsers) =>
-                prevUsers.map((u) => (u.id === user.id ? { ...u, status } : u))
-              );
-            });
-
-            return { ...user, status: "loading..." }; // Privremeni status dok ne stigne iz baze
-          });
-
-          setAllUsersList(updatedUsersList);
-          setIsLoading(false);
-        };
-
-        getUsersWithStatus();
+        setAllUsersList(usersList);
+        setIsLoading(false);
       },
       () => {
         toast.error("Error fetching users");
@@ -74,6 +50,25 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
     return () => unsubscribe(); // Cleanup listener-a
   }, []);
 
+  useEffect(() => {
+    const statusRef = ref(realtimeDb, "/status");
+
+    const unsubscribe = onValue(statusRef, (snapshot) => {
+      const statuses = snapshot.val();
+
+      if (!statuses) return;
+
+      setAllUsersList((prevUsers) =>
+        prevUsers.map((user) => ({
+          ...user,
+          status: statuses[user.id]?.state || "disconnected",
+        }))
+      );
+    });
+
+    return () => unsubscribe();
+  }, []);
+  console.log("allUsersList", allUsersList);
   const onSelectUser = (selectedUserId: string) => {
     const selectedUserName = allUsersList.find(
       (user) => user.id === selectedUserId
