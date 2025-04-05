@@ -39,6 +39,7 @@ const UserList: React.FC<UserListProps> = ({ onCloseModal }) => {
           isOnline: doc.data().isOnline,
         }));
         setUsersFromFirestore(usersList);
+        setIsLoading(false);
       },
       () => toast.error("Error fetching users")
     );
